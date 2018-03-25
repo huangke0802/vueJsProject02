@@ -7,7 +7,7 @@
 export default {
   data() {
     return {
-      name: "componentB",
+      name: "我是 componentB",
       cc: "comb"
     };
   }

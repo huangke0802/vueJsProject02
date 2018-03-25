@@ -1,63 +1,51 @@
 <template>
   <div :title="hello">
-   <!--  {{ hello }}
-    <p v-html="hello"></p>
-    <p v-text="html"></p>
+<!--     <p :is="temp-a"></p>
+    <temp-a :my-num="num" :myName="myName">
+      <p>我是通过slot插入进来的</p>
+      <p slot="slot-header">我是插槽slot插入的header</p>
+      <p slot="slot-footer">我是插槽slot插入的footer</p>
+    </temp-a> -->
 
-    <p v-for="item in list">{{item.name}} -- {{item.price}}</p>
-    <h5 v-for = "item in list" v-text="item.name +'+' + item.price"></h5>
-  	<ul>
-  		<li v-for="(item, index) in list" :class="{odd: index%2}">
-				{{item.name}} - {{item.price}} - {{index}}
-  		</li>
-  	</ul>
-  	<ol>
-  		<li v-for="(item, key) in objList">{{item}} + {{key}}</li>
-  	</ol>
+    <!-- css过度 -->
+    <button @click="isShow = !isShow">控制显示</button>
+    <transition name="tranx" mode="out-in">
+   <!--   <h1 v-show="isShow">看不到我的把</h1> -->
+    <!--  <h2 v-if="isShow">我是v-if</h2> -->
+    <!--  <div :is="tempType"></div> -->
 
-  	<h2 v-for="(item, key) in objList">
-  			{{key}}
-  			<tempA></tempA>
-        <tempB></tempB>
-  	</h2>
-    <tempB v-for="(item, key) in objList"></tempB> -->
 
-    <button v-on:click="addItem" class="btn" :class="[class1, {'red-big': classFlag}]">add item</button>
+    <p v-if="isShow" key="1" >I am ishow true “相同标签要加个key区分否则不会有过度”</p>
+    <i v-else key="2">I am is no show “不同标签不需要加key”</i>
+    </transition>
+    <button @click="tempChange">动态组件切换</button>
+    <!-- js 过度 -->
 
-     <div v-if="classFlag">v-if</div>
+ <!--    <transition
+      v-on:before-enter="beforeEnter"
+      v-on:enter="enter"
+      v-on:after-enter="afterEnter"
+      v-on:enter-cancelled="enterCancelled"
 
-     <div v-show="classFlag">v-show</div>
-    <button @click = "changFlag">changFlag</button>
-    <input type="text" @keydown.enter="onKeydown">
-    <tempA @my-event="myEvent"></tempA>
-    <div>
-      <!-- <input type="number" v-model.number="inputVal">
-      <p>{{inputVal}}</p>-->
-      <!-- 多选 -->
-      <input type="checkbox" name="front" value="apple" v-model="inputVal">
-      <label for="">apple</label>
-      <input type="checkbox" name="front" value="banana" v-model="inputVal">
-      <label for="">banana</label>
-      <input type="checkbox" name="front" value="orange" v-model="inputVal">
-      <label for="">orange</label>
-      <!-- 单选 -->
-      <p>{{radio}}</p>
-      <input type="radio" name="front" value="apple" v-model="radio">
-      <label for="">apple</label>
-      <input type="radio" name="front" value="banana" v-model="radio">
-      <label for="">banana</label>
-      <input type="radio" name="front" value="orange" v-model="radio">
-      <label for="">orange</label>
-      <br>
-      <input type="text" v-model="textValue">
-      <p>{{textValueWithoutNum}}</p>
-      <p>{{myValueWithoutNum()}}</p>
-
-    </div>
+      v-on:before-leave="beforeLeave"
+      v-on:leave="leave"
+      v-on:after-leave="afterLeave"
+      v-on:leave-cancelled="leaveCancelled"
+    >
+    </transition> -->
+  <div class="transWrap">
+    <transition
+      @before-enter="beforeEnter"
+      @enter="enter"
+      @leave="leave"
+      :css="false"
+    >
+      <p class="transMain" v-if="isSee">我是js控制的过度效果</p>
+    </transition>
+    <button @click="isSee = !isSee">js控制过度</button>
   </div>
 
-
-
+  </div>
 </template>
 
 <script>
@@ -68,89 +56,55 @@ import vue from "vue";
 export default {
   //注册模块
   components: {
-    tempA: comA,
-    tempB: comB
+    comA,
+    comB
   },
   data() {
     return {
-      textValue : "",
-      inputVal : ["banana"],
-      radio : 'orange',
-      class1: "btn-red",
-      class2: "btn-green",
-      classFlag: false,
-      hello: "world",
-      html: "<span>sss</span>",
-      classList: ["btn-i", "btn-big"],
-      classMap: {
-        "btn-small": true,
-        "btn-red": false
-      },
-      list: [
-        {
-          name: "apple",
-          price: 34
-        },
-        {
-          name: "banana",
-          price: 54
-        },
-        {
-          name: "orange",
-          price: 90
-        }
-      ],
-      objList: {
-        name: "price",
-        color: "red",
-        weight: 120
-      }
+      hello : "hello",
+      num: 689,
+      myName : "黄克",
+      isShow : true,
+      tempType : "com-a",
+      isSee : true
     };
   },
   //数据监听
   watch : {
-    textValue : function(newVal, oldVal){
-      console.log(newVal, oldVal);
-    }
   },
   //计算属性
   computed : {
-    textValueWithoutNum (){
-      //Date.now() ：获取当前时间
-      return this.textValue.replace(/\d/g, "");
-    }
   },
   methods: {
-    addItem() {
-      /*      this.list.push({
-       name : "english",
-       price :1222
-     }); */
+    tempChange(){
+      if(this.tempType == "com-a"){
+       this.tempType = "com-b";
+      }else{
+        this.tempType = "com-a";
+      }
+    },
 
-      //这种不能重新渲染
-      /*   this.list[1] = {
-        name : "哈哈是我",
-        price : 28
-      } */
+    beforeEnter(el){
+      $(el).css({
+        opacity : 0,
+        left : "-500px"
+      })
+    },
 
-      vue.set(this.list, 1, {
-        name: "哈哈是我",
-        price: 28
-      });
+    enter(el, done){
+      $(el).animate({
+        opacity : 1,
+        left : 0
+      },1500,done)
     },
-    changFlag() {
-      this.classFlag = !this.classFlag;
-    },
-    onKeydown() {
-      console.log("on keydown");
-    },
-    myEvent(a) {
-      console.log("myEvent " + a);
-    },
-    //跟计算属性textValueWithoutNum作用相同的方法
-    myValueWithoutNum(){
-      return this.textValue.replace(/\d/g, "");
+
+    leave(el, done){
+      $(el).animate({
+        opacity : 0,
+        left : "500px"
+      }, 1500, done)
     }
+
   }
 };
 </script>
@@ -164,4 +118,41 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
+.isShow-enter,.isShow-leave-active{
+  opacity: 0;
+}
+
+.isShow-enter-active,.isShow-leave-active{
+  transition: all 2s ease-in-out;
+}
+
+.tranx-enter{
+  transform: translateX(100px);
+  opacity: 0;
+}
+
+.tranx-leave-active{
+  transform : translateX(-300px);
+  opacity: 0;
+}
+
+.tranx-enter-active,.tranx-leave-active{
+  transition: all 1s ease-in-out;
+}
+
+.transWrap{
+  position: relative;
+  margin-left: 600px;
+}
+
+.transWrap>.transMain{
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
 </style>
+/*
+  接受动画效果的方法有，v-show，v-if，:is（动态组件）
+ */
