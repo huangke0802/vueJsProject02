@@ -2,26 +2,21 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-/*
-import router from './router'
+//引入插件
+import VueRouter from './router'
+//注册插件
+Vue.use(VueRouter)
+//实例化自己
+let router = new VueRouter();
 
-Vue.config.productionTip = false*/
-
-/* eslint-disable no-new */
-/*new Vue({
-  el: '#app',
-  router,
-  components: { App },
-  template: '<App/>'
-})*/
 
 new Vue({
-  el: "#app",
+  el: '#app',
   render: h => h(App)
 })
 
 //全局的自定义指令  调用时使用 v-css
-Vue.directive("css", {
+/* Vue.directive("css", {
   inserted (el, binding ){
     console.log(binding)
     let styleObj = binding.value;
@@ -36,4 +31,4 @@ Vue.directive("css", {
   bind(el, bind){
     console.log("bind");
   }
-})
+}) */
