@@ -19,3 +19,21 @@ new Vue({
   el: "#app",
   render: h => h(App)
 })
+
+//全局的自定义指令  调用时使用 v-css
+Vue.directive("css", {
+  inserted (el, binding ){
+    console.log(binding)
+    let styleObj = binding.value;
+    let arr=[];
+    for(let key in styleObj){
+      arr.push(key + ":" + styleObj[key]);
+    }
+    arr = arr.join(";");
+    el.style.cssText = arr;
+
+  },
+  bind(el, bind){
+    console.log("bind");
+  }
+})

@@ -165,4 +165,7 @@ export default {
   margin-top: 60px;
 }
 </style>
+<<<<<<< HEAD
 
+=======
+>>>>>>> ef4e74b0462dace546be17ffa09fc99d97071038
