@@ -110,8 +110,10 @@ export default {
   }
 };
 </script>
-
-<style>
+/**
+  scoped：表示只适用于当前文件，没有加scoped则对全局样式起效
+ */
+<style scoped>
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
